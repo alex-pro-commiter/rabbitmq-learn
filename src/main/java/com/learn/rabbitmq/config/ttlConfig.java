@@ -29,7 +29,7 @@ public class ttlConfig {
         return QueueBuilder
                 .durable(QUEUE_A)
                 .ttl(10000)
-                .deadLetterExchange(DEAD_LETTER_QUEUE)
+                .deadLetterExchange(Y_DEAD_LETTER_EXCHANGE)
                 .deadLetterRoutingKey("YD")
                 .build();
     }
@@ -38,8 +38,8 @@ public class ttlConfig {
     public Queue queueB(){
         return QueueBuilder
                 .durable(QUEUE_B)
-                .ttl(40000)
-                .deadLetterExchange(DEAD_LETTER_QUEUE)
+                .ttl(20000)
+                .deadLetterExchange(Y_DEAD_LETTER_EXCHANGE)
                 .deadLetterRoutingKey("YD")
                 .build();
     }
