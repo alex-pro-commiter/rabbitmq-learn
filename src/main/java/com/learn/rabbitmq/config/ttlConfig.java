@@ -12,6 +12,7 @@ public class ttlConfig {
     public static final String Y_DEAD_LETTER_EXCHANGE = "Y";
     public static final String QUEUE_A= "QA";
     public static final String QUEUE_B= "QB";
+    public static final String QUEUE_C= "QC";
     public static final String DEAD_LETTER_QUEUE= "QD";
 
     @Bean("xExchange")
@@ -44,6 +45,15 @@ public class ttlConfig {
                 .build();
     }
 
+    @Bean("queueC")
+    public Queue queueC(){
+        return QueueBuilder
+                .durable(QUEUE_C)
+                .deadLetterExchange(Y_DEAD_LETTER_EXCHANGE)
+                .deadLetterRoutingKey("YD")
+                .build();
+    }
+
     @Bean("queueD")
     public Queue queueD(){
         return QueueBuilder
@@ -61,6 +71,12 @@ public class ttlConfig {
     public Binding queueBBindingX(@Qualifier("queueB") Queue queueB,
                                   @Qualifier("xExchange") DirectExchange xExchange){
         return BindingBuilder.bind(queueB).to(xExchange).with("XB");
+    }
+
+    @Bean
+    public Binding queueCBindingX(@Qualifier("queueC") Queue queueC,
+                                  @Qualifier("xExchange") DirectExchange xExchange){
+        return BindingBuilder.bind(queueC).to(xExchange).with("XC");
     }
 
     @Bean

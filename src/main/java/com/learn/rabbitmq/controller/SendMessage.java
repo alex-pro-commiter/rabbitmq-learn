@@ -26,6 +26,17 @@ public class SendMessage {
     public void sendMsg(@PathVariable String msg) {
         log.info("current time is:{},send message to two ttl message queue {}", new Date().toString(), msg);
         rabbitTemplate.convertAndSend("X", "XA", "message from ttl 10s queue" + msg);
-        rabbitTemplate.convertAndSend("X", "XB", "message from ttl 40s queue" + msg);
+        rabbitTemplate.convertAndSend("X", "XB", "message from ttl 20s queue" + msg);
+    }
+
+    @GetMapping("/sendttlmsg/{msg}/{ttl}")
+    public void sendTtlMsg(@PathVariable String msg,
+                           @PathVariable String ttl){
+        log.info("current time:{},send message ttl {} to queue C : {}",
+                new Date().toString(),ttl,msg);
+        rabbitTemplate.convertAndSend("X","XC","message from queue C:"+msg,message -> {
+            message.getMessageProperties().setExpiration(ttl);
+            return message;
+        });
     }
 }
