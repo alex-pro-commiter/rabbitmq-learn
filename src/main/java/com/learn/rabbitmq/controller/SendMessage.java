@@ -1,7 +1,7 @@
 package com.learn.rabbitmq.controller;
 
 import com.learn.rabbitmq.config.DelayedQueueConfig;
-import com.learn.rabbitmq.config.ttlConfig;
+import com.learn.rabbitmq.config.TtlQueueConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,8 +31,8 @@ public class SendMessage {
     @GetMapping("/sendMsg/{msg}")
     public void sendMsg(@PathVariable String msg) {
         log.info("current time is:{},send message to two ttl message queue {}", new Date().toString(), msg);
-        rabbitTemplate.convertAndSend(ttlConfig.X_EXCHANGE, "XA", "message from ttl 10s queue" + msg);
-        rabbitTemplate.convertAndSend(ttlConfig.X_EXCHANGE, "XB", "message from ttl 20s queue" + msg);
+        rabbitTemplate.convertAndSend(TtlQueueConfig.X_EXCHANGE, "XA", "message from ttl 10s queue" + msg);
+        rabbitTemplate.convertAndSend(TtlQueueConfig.X_EXCHANGE, "XB", "message from ttl 20s queue" + msg);
     }
 
     /**
@@ -45,7 +45,7 @@ public class SendMessage {
                            @PathVariable String ttl) {
         log.info("current time:{},send message ttl {} to queue C : {}",
                 new Date().toString(), ttl, msg);
-        rabbitTemplate.convertAndSend(ttlConfig.X_EXCHANGE, "XC", "message from queue C:" + msg, message -> {
+        rabbitTemplate.convertAndSend(TtlQueueConfig.X_EXCHANGE, "XC", "message from queue C:" + msg, message -> {
             message.getMessageProperties().setExpiration(ttl);
             return message;
         });

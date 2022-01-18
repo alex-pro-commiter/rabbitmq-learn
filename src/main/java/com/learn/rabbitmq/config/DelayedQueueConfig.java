@@ -48,6 +48,7 @@ public class DelayedQueueConfig {
     @Bean
     public Binding delayedQueueBindingDelayedExchange(@Qualifier("delayedQueue") Queue delayedQueue,
                                                       @Qualifier("delayedExchange") CustomExchange delayedExchange) {
+        // this exchange is customer exchange need args but we dont need in this sample
         return BindingBuilder.bind(delayedQueue).to(delayedExchange).with(DELAYED_ROUTING_KEY).noargs();
     }
 }
