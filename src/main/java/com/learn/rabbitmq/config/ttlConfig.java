@@ -10,23 +10,23 @@ import org.springframework.context.annotation.Configuration;
 public class ttlConfig {
     public static final String X_EXCHANGE = "X";
     public static final String Y_DEAD_LETTER_EXCHANGE = "Y";
-    public static final String QUEUE_A= "QA";
-    public static final String QUEUE_B= "QB";
-    public static final String QUEUE_C= "QC";
-    public static final String DEAD_LETTER_QUEUE= "QD";
+    public static final String QUEUE_A = "QA";
+    public static final String QUEUE_B = "QB";
+    public static final String QUEUE_C = "QC";
+    public static final String DEAD_LETTER_QUEUE = "QD";
 
     @Bean("xExchange")
-    public DirectExchange xExchange(){
+    public DirectExchange xExchange() {
         return new DirectExchange(X_EXCHANGE);
     }
 
     @Bean("yExchange")
-    public DirectExchange yExchange(){
+    public DirectExchange yExchange() {
         return new DirectExchange(Y_DEAD_LETTER_EXCHANGE);
     }
 
     @Bean("queueA")
-    public Queue queueA(){
+    public Queue queueA() {
         return QueueBuilder
                 .durable(QUEUE_A)
                 .ttl(10000)
@@ -36,7 +36,7 @@ public class ttlConfig {
     }
 
     @Bean("queueB")
-    public Queue queueB(){
+    public Queue queueB() {
         return QueueBuilder
                 .durable(QUEUE_B)
                 .ttl(20000)
@@ -46,7 +46,7 @@ public class ttlConfig {
     }
 
     @Bean("queueC")
-    public Queue queueC(){
+    public Queue queueC() {
         return QueueBuilder
                 .durable(QUEUE_C)
                 .deadLetterExchange(Y_DEAD_LETTER_EXCHANGE)
@@ -55,7 +55,7 @@ public class ttlConfig {
     }
 
     @Bean("queueD")
-    public Queue queueD(){
+    public Queue queueD() {
         return QueueBuilder
                 .durable(DEAD_LETTER_QUEUE)
                 .build();
@@ -63,25 +63,25 @@ public class ttlConfig {
 
     @Bean
     public Binding queueABindingX(@Qualifier("queueA") Queue queueA,
-                                    @Qualifier("xExchange") DirectExchange xExchange){
+                                  @Qualifier("xExchange") DirectExchange xExchange) {
         return BindingBuilder.bind(queueA).to(xExchange).with("XA");
     }
 
     @Bean
     public Binding queueBBindingX(@Qualifier("queueB") Queue queueB,
-                                  @Qualifier("xExchange") DirectExchange xExchange){
+                                  @Qualifier("xExchange") DirectExchange xExchange) {
         return BindingBuilder.bind(queueB).to(xExchange).with("XB");
     }
 
     @Bean
     public Binding queueCBindingX(@Qualifier("queueC") Queue queueC,
-                                  @Qualifier("xExchange") DirectExchange xExchange){
+                                  @Qualifier("xExchange") DirectExchange xExchange) {
         return BindingBuilder.bind(queueC).to(xExchange).with("XC");
     }
 
     @Bean
     public Binding queueDBindingX(@Qualifier("queueD") Queue queueD,
-                                  @Qualifier("yExchange") DirectExchange yExchange){
+                                  @Qualifier("yExchange") DirectExchange yExchange) {
         return BindingBuilder.bind(queueD).to(yExchange).with("YD");
     }
 }
