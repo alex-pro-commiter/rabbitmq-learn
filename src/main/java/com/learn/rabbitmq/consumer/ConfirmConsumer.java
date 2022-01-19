@@ -20,13 +20,22 @@ public class ConfirmConsumer {
         log.info("received confirm queue message: {}", m);
     }
 }
-
+/**
+ * this block defined a inner class implements confirmCallback functional interface
+ * and override the confirm interface.
+ * if message cannot send to exchange,
+ * the callback functional can deal with the returned ack signal and message defined id
+ */
 @Slf4j
 @Component
 class confirmCallBack implements RabbitTemplate.ConfirmCallback {
 
+    private final RabbitTemplate rabbitTemplate;
+
     @Autowired
-    private RabbitTemplate rabbitTemplate;
+    public confirmCallBack(RabbitTemplate rabbitTemplate) {
+        this.rabbitTemplate = rabbitTemplate;
+    }
 
     @PostConstruct
     public void init() {
