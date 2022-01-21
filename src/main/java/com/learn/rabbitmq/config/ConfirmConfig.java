@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * config for advance publish confirm mode
- * if message cannot publish success
- * message will be portal to cache
+ * if message publish failed
+ * the message will be trans to cache
  * then async task will publish again
  */
 
